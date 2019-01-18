@@ -440,7 +440,7 @@ class Connection(ConnectionBase):
                         self._winrm_send_input(self.protocol, self.shell_id, command_id, data, eof=is_last)
 
             except Exception as ex:
-                display.warning("FATAL ERROR DURING FILE TRANSFER: %s" % to_text(ex))
+                display.warning("FATAL ERROR DURING FILE TRANSFER: %s %s" % (type(ex), ex))
                 stdin_push_failed = True
 
             # NB: this can hang if the receiver is still running (eg, network failed a Send request but the server's still happy).
