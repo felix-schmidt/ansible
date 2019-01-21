@@ -128,6 +128,7 @@ try:
     import winrm
     from winrm import Response
     from winrm.protocol import Protocol
+    from winrm.exceptions import WinRMOperationTimeoutError
     HAS_WINRM = True
 except ImportError as e:
     HAS_WINRM = False
@@ -438,6 +439,9 @@ class Connection(ConnectionBase):
                 if stdin_iterator:
                     for (data, is_last) in stdin_iterator:
                         self._winrm_send_input(self.protocol, self.shell_id, command_id, data, eof=is_last)
+
+            except WinRMOperationTimeoutError as ex:
+                display.warning("IGNORING WINRM OPERATION TIMEOUT ERROR: %s" % ex)
 
             except Exception as ex:
                 display.warning("FATAL ERROR DURING FILE TRANSFER: %s %s" % (type(ex), ex))
